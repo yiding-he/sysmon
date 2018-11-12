@@ -1,10 +1,15 @@
 package com.hyd.sysmon.agent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class AgentScheduler {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AgentScheduler.class);
 
     private String managerUrl;
 
@@ -21,12 +26,18 @@ public class AgentScheduler {
 
             @Override
             public void run() {
-
+                try {
+                    runAgent();
+                } catch (Exception e) {
+                    LOG.error("", e);
+                }
             }
         }, 0, 5000);
+
+        LOG.info("Agent scheduler started.");
     }
 
-    public void run() throws Exception {
+    public void runAgent() throws Exception {
         Map<String, Object> map = Gatherer.gatherFrom(this.agent);
         HttpRequest httpRequest = new HttpRequest(this.managerUrl);
         map.forEach(httpRequest::setParameter);

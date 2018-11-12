@@ -31,7 +31,7 @@ public class LinuxAgent implements Agent {
             cpuUsage = -1;
         } else {
             double[] current = parseStat(lines);
-            cpuUsage = (current[3] - lastStat[3]) / (current[9] - lastStat[9]) * 100;
+            cpuUsage = 100.0 - ((current[3] - lastStat[3]) / (current[9] - lastStat[9]) * 100);
             lastStat = current;
         }
     }
