@@ -2,20 +2,23 @@ package com.hyd.sysmon.manager;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class SysStatusManager {
 
-    private Map<String, SysStatus> statusMappings = new HashMap<>();
+    private Map<String, List<SysStatus>> statusMappings = new ConcurrentHashMap<>();
 
     public void addSysStatus(SysStatus sysStatus) {
-        this.statusMappings.put(sysStatus.getHost(), sysStatus);
+        this.statusMappings
+                .computeIfAbsent(sysStatus.getHost(), __ -> new Vector<>())
+                .add(sysStatus);
     }
 
-    public Collection<SysStatus> getSysStatuses() {
-        return statusMappings.values();
+    public Map<String, List<SysStatus>> getSysStatuses() {
+        return statusMappings;
     }
 }
