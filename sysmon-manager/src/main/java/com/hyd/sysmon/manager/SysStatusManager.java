@@ -9,13 +9,13 @@ import java.util.Map;
 @Component
 public class SysStatusManager {
 
-    private Map<String, SysStatus> statusMappings = new HashMap<>();
+    private Map<String, Map<String, Object>> statusMappings = new HashMap<>();
 
-    public void addSysStatus(SysStatus sysStatus) {
-        this.statusMappings.put(sysStatus.getHost(), sysStatus);
+    public void addSysStatus(String host, Map<String, Object> data) {
+        this.statusMappings.put(host, data);
     }
 
-    public Collection<SysStatus> getSysStatuses() {
+    public Collection<Map<String, Object>> getSysStatuses() {
         return statusMappings.values();
     }
 }

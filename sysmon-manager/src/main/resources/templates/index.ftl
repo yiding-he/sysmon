@@ -19,13 +19,21 @@
     <tr>
         <td>HOST</td>
         <td>CPU Usage</td>
+        <td>Total Memory</td>
+        <td>Memory Usage</td>
+        <td>Total Swap</td>
+        <td>Swap Usage</td>
     </tr>
     </thead>
     <tbody>
     <#list statuses as status>
     <tr>
         <td>${status.host}</td>
-        <td>${status.cpuUsage}%</td>
+        <td>${status.cpu_usage}</td>
+        <td>${status.mem_total}</td>
+        <td>${status.mem_usage}</td>
+        <td>${status.swap_total}</td>
+        <td>${status.swap_usage}</td>
     </tr>
     </#list>
     </tbody>

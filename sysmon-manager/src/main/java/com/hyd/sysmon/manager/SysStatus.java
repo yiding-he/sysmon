@@ -10,7 +10,8 @@ public class SysStatus {
     public static SysStatus parse(HttpServletRequest request) {
         SysStatus sysStatus = new SysStatus();
         sysStatus.host = request.getRemoteHost();
-        sysStatus.cpuUsage = Double.parseDouble(request.getParameter("cpu_usage"));
+        sysStatus.cpuUsage = request.getParameter("cpu_usage");
+        sysStatus.totalMemory = request.getParameter("mem_total");
 
         return sysStatus;
     }
@@ -19,6 +20,13 @@ public class SysStatus {
 
     private String host;
 
-    private double cpuUsage;
+    private String cpuUsage;
 
+    private String totalMemory;
+
+    private String memoryUsage;
+
+    private String totalSwap;
+
+    private String swapUsage;
 }
