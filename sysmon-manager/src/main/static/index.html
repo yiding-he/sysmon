@@ -6,6 +6,29 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        div.block {
+            display: inline-block;
+            max-width: 30em;
+            margin: 1em;
+        }
+
+        div.block .title {
+            font-size: 120%;
+        }
+
+        div.block .field .label {
+            display: inline-block;
+            min-width: 5em;
+            color: #a1d5ff;
+        }
+
+        div.block .field {
+            padding: 0.2em 0.5em;
+            background-color: dodgerblue;
+            color: white;
+        }
+    </style>
     <script src="js/jquery-3.3.1.js"></script>
     <script>
         var parseData = function (result) {
@@ -20,17 +43,31 @@
 
             var statuses = result.data.statuses;
 
-            $('#tbody').empty();
+            $('#blocks').empty();
             $.each(statuses, function (index, status) {
-                $('#tbody').append(
-                    $('<tr>').
-                    append($('<td>').html(status.host)).
-                    append($('<td>').html(status.cpu_usage)).
-                    append($('<td>').html(status.mem_total)).
-                    append($('<td>').html(status.mem_usage)).
-                    append($('<td>').html(status.swap_total)).
-                    append($('<td>').html(status.swap_usage))
-                );
+                $('<div>').addClass('block')
+                    .append($('<div>').addClass('title').html(status.host))
+                    .append($('<div>').addClass('field')
+                        .append($('<span>').addClass('label').html('CPU'))
+                        .append($('<span>').addClass('value').html(status.cpu_usage))
+                    )
+                    .append($('<div>').addClass('field')
+                        .append($('<span>').addClass('label').html('Memory'))
+                        .append($('<span>').addClass('value').html(status.mem_total))
+                    )
+                    .append($('<div>').addClass('field')
+                        .append($('<span>').addClass('label').html('&nbsp;'))
+                        .append($('<span>').addClass('value').html(status.mem_usage))
+                    )
+                    .append($('<div>').addClass('field')
+                        .append($('<span>').addClass('label').html('Swap'))
+                        .append($('<span>').addClass('value').html(status.swap_total))
+                    )
+                    .append($('<div>').addClass('field')
+                        .append($('<span>').addClass('label').html('&nbsp;'))
+                        .append($('<span>').addClass('value').html(status.swap_usage))
+                    )
+                    .appendTo('#blocks');
             });
         };
 
@@ -47,20 +84,9 @@
 </head>
 <body>
 <div id="message"></div>
-<table border="1">
-    <thead>
-    <tr>
-        <td>HOST</td>
-        <td>CPU Usage</td>
-        <td>Total Memory</td>
-        <td>Memory Usage</td>
-        <td>Total Swap</td>
-        <td>Swap Usage</td>
-    </tr>
-    </thead>
-    <tbody id="tbody">
 
-    </tbody>
-</table>
+<div id="blocks">
+
+</div>
 </body>
 </html>
