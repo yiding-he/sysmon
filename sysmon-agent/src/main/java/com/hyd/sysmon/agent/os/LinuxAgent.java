@@ -2,6 +2,8 @@ package com.hyd.sysmon.agent.os;
 
 import com.hyd.sysmon.agent.Agent;
 import com.hyd.sysmon.agent.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,6 +15,8 @@ import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 public class LinuxAgent implements Agent {
+
+    private static final Logger LOG = LoggerFactory.getLogger(LinuxAgent.class);
 
     public static final String ROOT = System.getProperty("root", "/");
 
@@ -55,7 +59,7 @@ public class LinuxAgent implements Agent {
                 ));
 
         this.totalMemory = memInfoMap.get("MemTotal");
-        this.freeMemory = memInfoMap.get("MemFree");
+        this.freeMemory = memInfoMap.get("MemFree") + memInfoMap.get("Buffers") + memInfoMap.get("Cached");
         this.totalSwap = memInfoMap.get("SwapTotal");
         this.freeSwap = memInfoMap.get("SwapFree");
     }
