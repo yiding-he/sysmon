@@ -23,9 +23,15 @@ public class Gatherer {
             return Collections.emptyMap();
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("cpu_usage", agent.getCpuUsage());
+        double memUsage = ((double) agent.getTotalMemory() - agent.getFreeMemory()) / agent.getTotalMemory();
+        double swapUsage = ((double) agent.getTotalSwap() - agent.getFreeSwap()) / agent.getTotalSwap();
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("cpu_usage", String.format("%.3f%%", agent.getCpuUsage()));
+        data.put("mem_total", String.format("%,d KB", agent.getTotalMemory()));
+        data.put("mem_usage", String.format("%.3f%%", memUsage * 100));
+        data.put("swap_total", String.format("%,d KB", agent.getTotalSwap()));
+        data.put("swap_usage", String.format("%.3f%%", swapUsage * 100));
         return data;
     }
 }
