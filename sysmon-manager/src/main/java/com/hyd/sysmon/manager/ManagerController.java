@@ -25,6 +25,7 @@ public class ManagerController {
 
     private Map<String, Object> parseToMap(Map<String, String[]> map, String host) {
         Map<String, Object> result = new HashMap<>();
+        result.put("timestamp", System.currentTimeMillis());
         result.put("host", host);
 
         map.forEach((key, value) -> {

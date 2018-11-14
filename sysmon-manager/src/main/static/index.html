@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="zh">
 <head>
+    <!-- http://10.10.22.212:32123/jar-runner.jar -->
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -19,6 +20,18 @@
 
             var statuses = result.data.statuses;
 
+            $('#tbody').empty();
+            $.each(statuses, function (index, status) {
+                $('#tbody').append(
+                    $('<tr>').
+                    append($('<td>').html(status.host)).
+                    append($('<td>').html(status.cpu_usage)).
+                    append($('<td>').html(status.mem_total)).
+                    append($('<td>').html(status.mem_usage)).
+                    append($('<td>').html(status.swap_total)).
+                    append($('<td>').html(status.swap_usage))
+                );
+            });
         };
 
         var queryData = function () {
@@ -26,7 +39,7 @@
         };
 
         $(function() {
-            $('#status-pane').append($('<div>').html("Script started."));
+            queryData();
             setInterval(queryData, 5000);
         });
     </script>
@@ -34,8 +47,20 @@
 </head>
 <body>
 <div id="message"></div>
-<div id="status-pane">
+<table border="1">
+    <thead>
+    <tr>
+        <td>HOST</td>
+        <td>CPU Usage</td>
+        <td>Total Memory</td>
+        <td>Memory Usage</td>
+        <td>Total Swap</td>
+        <td>Swap Usage</td>
+    </tr>
+    </thead>
+    <tbody id="tbody">
 
-</div>
+    </tbody>
+</table>
 </body>
 </html>

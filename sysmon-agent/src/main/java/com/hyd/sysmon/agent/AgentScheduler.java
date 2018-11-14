@@ -29,7 +29,7 @@ public class AgentScheduler {
                 try {
                     runAgent();
                 } catch (Exception e) {
-                    LOG.error("", e);
+                    LOG.error(e.toString());
                 }
             }
         }, 0, 5000);
@@ -38,7 +38,15 @@ public class AgentScheduler {
     }
 
     public void runAgent() throws Exception {
-        Map<String, Object> map = Gatherer.gatherFrom(this.agent);
+        Map<String, Object> map;
+
+        try {
+            map = Gatherer.gatherFrom(this.agent);
+        } catch (Exception e) {
+            LOG.error("", e);
+            return;
+        }
+
         HttpRequest httpRequest = new HttpRequest(this.managerUrl);
         map.forEach(httpRequest::setParameter);
         httpRequest.requestPost();
