@@ -1,15 +1,10 @@
 package com.hyd.sysmon.agent;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class AgentScheduler {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AgentScheduler.class);
 
     private String managerUrl;
 
@@ -29,12 +24,12 @@ public class AgentScheduler {
                 try {
                     runAgent();
                 } catch (Exception e) {
-                    LOG.error(e.toString());
+                    System.err.println(e.toString());
                 }
             }
         }, 0, 5000);
 
-        LOG.info("Agent scheduler started.");
+        System.out.println("Agent scheduler started.");
     }
 
     public void runAgent() throws Exception {
@@ -43,7 +38,7 @@ public class AgentScheduler {
         try {
             map = Gatherer.gatherFrom(this.agent);
         } catch (Exception e) {
-            LOG.error("", e);
+            e.printStackTrace();
             return;
         }
 

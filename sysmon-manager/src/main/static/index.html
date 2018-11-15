@@ -7,19 +7,24 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <style>
+        div {
+            font-size: 9pt;
+        }
+
         div.block {
             display: inline-block;
-            max-width: 30em;
+            min-width: 13em;
             margin: 1em;
         }
 
         div.block .title {
-            font-size: 120%;
+            font-weight: bold;
+            color: #555555;
         }
 
         div.block .field .label {
             display: inline-block;
-            min-width: 5em;
+            min-width: 3em;
             color: #a1d5ff;
         }
 
@@ -46,13 +51,14 @@
             $('#blocks').empty();
             $.each(statuses, function (index, status) {
                 $('<div>').addClass('block')
+                    .append($('<div>').addClass('title').html(status.host_name))
                     .append($('<div>').addClass('title').html(status.host))
                     .append($('<div>').addClass('field')
                         .append($('<span>').addClass('label').html('CPU'))
                         .append($('<span>').addClass('value').html(status.cpu_usage))
                     )
                     .append($('<div>').addClass('field')
-                        .append($('<span>').addClass('label').html('Memory'))
+                        .append($('<span>').addClass('label').html('Mem'))
                         .append($('<span>').addClass('value').html(status.mem_total))
                     )
                     .append($('<div>').addClass('field')
@@ -60,7 +66,7 @@
                         .append($('<span>').addClass('value').html(status.mem_usage))
                     )
                     .append($('<div>').addClass('field')
-                        .append($('<span>').addClass('label').html('Swap'))
+                        .append($('<span>').addClass('label').html('Swp'))
                         .append($('<span>').addClass('value').html(status.swap_total))
                     )
                     .append($('<div>').addClass('field')
