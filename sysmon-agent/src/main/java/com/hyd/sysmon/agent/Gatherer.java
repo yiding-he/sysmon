@@ -28,6 +28,8 @@ public class Gatherer {
         data.put("mem_usage", String.format("%.3f%%", memUsage * 100));
         data.put("swap_total", String.format("%,d KB", agent.getTotalSwap()));
         data.put("swap_usage", String.format("%.3f%%", swapUsage * 100));
+
+        data.put("cpu_count", StaticInfo.getInstance().getCpuCount());
         return data;
     }
 }
