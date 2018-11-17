@@ -1,6 +1,7 @@
 package com.hyd.sysmon.agent.os;
 
 import com.hyd.sysmon.agent.Agent;
+import com.hyd.sysmon.agent.DiskInfo;
 import com.hyd.sysmon.agent.Util;
 
 import java.io.IOException;
@@ -27,6 +28,8 @@ public class LinuxAgent implements Agent {
     private long freeSwap;
 
     private double[] lastStat;
+
+    private DiskInfo diskInfo;
 
     @Override
     public boolean matchCurrentOS() {
@@ -60,7 +63,8 @@ public class LinuxAgent implements Agent {
         this.freeSwap = memInfoMap.get("SwapFree");
     }
 
-    private long parseMemorySize(String s) {
+    // '100 kb'
+    private static long parseMemorySize(String s) {
         String[] split = s.split("\\s+");
         String unit = split.length > 1? split[1].toLowerCase(): "";
         long number = Long.parseLong(split[0]);
@@ -132,5 +136,10 @@ public class LinuxAgent implements Agent {
     @Override
     public long getFreeSwap() {
         return freeSwap;
+    }
+
+    @Override
+    public DiskInfo getDiskInfo() {
+        return diskInfo;
     }
 }

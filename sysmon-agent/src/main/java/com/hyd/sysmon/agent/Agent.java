@@ -19,4 +19,6 @@ public interface Agent {
 
     // KB
     long getFreeSwap();
+
+    DiskInfo getDiskInfo();
 }
