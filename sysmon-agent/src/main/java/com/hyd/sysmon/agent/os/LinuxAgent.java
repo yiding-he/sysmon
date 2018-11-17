@@ -2,16 +2,21 @@ package com.hyd.sysmon.agent.os;
 
 import com.hyd.sysmon.agent.Agent;
 import com.hyd.sysmon.agent.DiskInfo;
+import com.hyd.sysmon.agent.ProcessReader;
 import com.hyd.sysmon.agent.Util;
+import com.hyd.sysmon.agent.linux.DfParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
+
+import static com.hyd.sysmon.agent.ProcessReader.readFromCommand;
 
 public class LinuxAgent implements Agent {
 
@@ -42,9 +47,16 @@ public class LinuxAgent implements Agent {
     public void refresh() throws Exception {
         refreshCpuUsage();
         refreshMemoryUsage();
+        refreshDiskInfo();
     }
 
     ///////////////////////////////////////////////////////////////
+
+    private void refreshDiskInfo() {
+        List<DiskInfo> diskInfoList = DfParser.parse(readFromCommand("df", "-k"));
+        Comparator<DiskInfo> comparator = Comparator.comparing(DiskInfo::getAvailable);
+        this.diskInfo = diskInfoList.stream().min(comparator).orElse(null);
+    }
 
     private void refreshMemoryUsage() throws IOException {
         List<String> lines = Files.readAllLines(Paths.get(ROOT + "proc/meminfo"));

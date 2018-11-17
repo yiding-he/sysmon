@@ -52,7 +52,6 @@
             $.each(statuses, function (index, status) {
                 $('<div>').addClass('block')
                     .append($('<div>').addClass('title').html(status.host_name))
-                    .append($('<div>').addClass('title').html(status.host))
                     .append($('<div>').addClass('field')
                         .append($('<span>').addClass('label').html('CPU'))
                         .append($('<span>').addClass('value').html((status.cpu_count || '?') + ' cores'))
@@ -76,6 +75,14 @@
                     .append($('<div>').addClass('field')
                         .append($('<span>').addClass('label').html('&nbsp;'))
                         .append($('<span>').addClass('value').html(status.swap_usage))
+                    )
+                    .append($('<div>').addClass('field')
+                        .append($('<span>').addClass('label').html('FS'))
+                        .append($('<span>').addClass('value').html(status.min_disk_path || '?'))
+                    )
+                    .append($('<div>').addClass('field')
+                        .append($('<span>').addClass('label').html('&nbsp;'))
+                        .append($('<span>').addClass('value').html(status.min_disk_available || '?'))
                     )
                     .appendTo('#blocks');
             });

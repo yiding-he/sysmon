@@ -16,7 +16,7 @@ public class SysStatusManager {
 
     public List<Map<String, Object>> getSysStatuses() {
         return statusMappings.values().stream()
-                .sorted(Comparator.comparing(map -> String.valueOf(map.get("host"))))
+                .sorted(Comparator.comparing(map -> String.valueOf(map.get("host_name"))))
                 .filter(SysStatusManager::notExpired)
                 .collect(Collectors.toList());
     }

@@ -1,5 +1,7 @@
 package com.hyd.sysmon.agent;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,25 +25,20 @@ public class AgentScheduler {
             public void run() {
                 try {
                     runAgent();
-                } catch (Exception e) {
+                } catch (IOException e) {
                     System.err.println(e.toString());
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                    timer.cancel();
                 }
             }
         }, 0, 5000);
 
-        System.out.println("Agent scheduler started.");
+        System.out.println("Agent scheduler started at " + new Date());
     }
 
     public void runAgent() throws Exception {
-        Map<String, Object> map;
-
-        try {
-            map = Gatherer.gatherFrom(this.agent);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-
+        Map<String, Object> map = Gatherer.gatherFrom(this.agent);
         HttpRequest httpRequest = new HttpRequest(this.managerUrl);
         map.forEach(httpRequest::setParameter);
         httpRequest.requestPost();

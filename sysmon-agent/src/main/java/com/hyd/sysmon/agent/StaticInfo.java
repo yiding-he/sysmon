@@ -1,12 +1,9 @@
 package com.hyd.sysmon.agent;
 
-import lombok.Data;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-@Data
 public class StaticInfo {
 
     private static final StaticInfo instance = new StaticInfo();
@@ -20,6 +17,14 @@ public class StaticInfo {
     }
 
     private int cpuCount;
+
+    public int getCpuCount() {
+        return cpuCount;
+    }
+
+    public void setCpuCount(int cpuCount) {
+        this.cpuCount = cpuCount;
+    }
 
     private int cpuCount() {
         try {
