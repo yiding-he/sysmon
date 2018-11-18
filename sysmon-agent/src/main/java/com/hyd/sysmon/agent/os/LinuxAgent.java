@@ -2,7 +2,6 @@ package com.hyd.sysmon.agent.os;
 
 import com.hyd.sysmon.agent.Agent;
 import com.hyd.sysmon.agent.DiskInfo;
-import com.hyd.sysmon.agent.ProcessReader;
 import com.hyd.sysmon.agent.Util;
 import com.hyd.sysmon.agent.linux.DfParser;
 
@@ -104,11 +103,12 @@ public class LinuxAgent implements Agent {
             cpuUsage = -1;
         } else {
             double[] current = parseStat(lines);
-            cpuUsage = 100.0 - ((current[3] - lastStat[3]) / (current[9] - lastStat[9]) * 100);
+            cpuUsage = 100.0 - ((current[4] - lastStat[4]) / (current[0] - lastStat[0]) * 100);
             lastStat = current;
         }
     }
 
+    // first element is sum
     private double[] parseStat(List<String> lines) {
 
         double[] arr = Stream.of(lines.get(0).split("\\s+"))
@@ -117,8 +117,8 @@ public class LinuxAgent implements Agent {
                 .toArray();
 
         double[] result = new double[arr.length + 1];
-        System.arraycopy(arr, 0, result, 0, arr.length);
-        result[result.length - 1] = DoubleStream.of(arr).sum();
+        System.arraycopy(arr, 0, result, 1, arr.length);
+        result[0] = DoubleStream.of(arr).sum();
 
         return result;
     }

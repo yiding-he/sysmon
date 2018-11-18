@@ -28,7 +28,9 @@ public class StaticInfo {
 
     private int cpuCount() {
         try {
-            return (int) Files.list(Paths.get("/dev/cpu")).count();
+            return (int) Files.list(Paths.get("/dev/cpu"))
+                    .filter(Files::isDirectory)
+                    .count();
         } catch (IOException e) {
             return 0;
         }

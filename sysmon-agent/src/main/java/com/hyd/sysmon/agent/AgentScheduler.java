@@ -66,12 +66,14 @@ public class AgentScheduler {
 
         // initial value
         if (AgentMain.getAgentETag() == 0 && agentETag > 0) {
+            System.out.println("Current Agent ETag: " + agentETag);
             AgentMain.setAgentETag(agentETag);
             return;
         }
 
         // need update
         if (AgentMain.getAgentETag() < agentETag) {
+            System.out.println("New Version Agent ETag: " + agentETag);
             AgentMain.restart();
         }
     }
