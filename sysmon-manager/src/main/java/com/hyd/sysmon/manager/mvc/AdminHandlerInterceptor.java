@@ -11,6 +11,10 @@ public class AdminHandlerInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (!request.getRequestURI().contains("/admin/")) {
+            return true;
+        }
+
         String host = request.getHeader("Host");
         return host.equals("localhost") || host.startsWith("localhost:");
     }
