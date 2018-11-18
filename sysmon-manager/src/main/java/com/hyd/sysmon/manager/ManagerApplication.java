@@ -8,6 +8,16 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties(Configuration.class)
 public class ManagerApplication {
 
+    private static long agentETag = 0;
+
+    public static long getAgentETag() {
+        return agentETag;
+    }
+
+    public static void setAgentETag(long agentETag) {
+        ManagerApplication.agentETag = agentETag;
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(ManagerApplication.class, args);
     }

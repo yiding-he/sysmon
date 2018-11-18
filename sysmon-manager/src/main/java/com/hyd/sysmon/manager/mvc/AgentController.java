@@ -1,40 +1,36 @@
-package com.hyd.sysmon.manager;
+package com.hyd.sysmon.manager.mvc;
 
+import com.hyd.sysmon.manager.ManagerApplication;
+import com.hyd.sysmon.manager.Result;
+import com.hyd.sysmon.manager.SysStatusManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * for agent update
+ */
 @RestController
-public class ManagerController {
-
-    private int agentVersion = 0;
+public class AgentController {
 
     @Autowired
     private SysStatusManager sysStatusManager;
 
     @PostMapping("/update")
     @ResponseBody
-    public String update(HttpServletRequest request) {
+    public Result update(HttpServletRequest request) {
         String host = request.getRemoteHost();
 
         sysStatusManager.addSysStatus(
                 host, parseToMap(request.getParameterMap(), host)
         );
 
-        return String.valueOf(agentVersion);
-    }
-
-    @PostMapping("/set-agent-version")
-    @ResponseBody
-    public String setAgentVersion(int version) {
-        this.agentVersion = version;
-        return "Agent version updated to " + this.agentVersion + ".";
+        return Result.success().put("agent-etag", ManagerApplication.getAgentETag());
     }
 
     private Map<String, Object> parseToMap(Map<String, String[]> map, String host) {

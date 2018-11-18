@@ -14,6 +14,12 @@ public class Result {
         return new Result();
     }
 
+    public static Result success(String message) {
+        Result result = new Result();
+        result.setMessage(message);
+        return result;
+    }
+
     public static Result fail(String message) {
         return fail(-1, message);
     }
