@@ -1,5 +1,7 @@
 package com.hyd.sysmon.agent;
 
+import mjson.Json;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
@@ -37,10 +39,41 @@ public class AgentScheduler {
         System.out.println("Agent scheduler started at " + new Date());
     }
 
+    /**
+     * make request to server and parse result
+     *
+     * @throws Exception anything unexpected happens
+     */
     public void runAgent() throws Exception {
         Map<String, Object> map = Gatherer.gatherFrom(this.agent);
         HttpRequest httpRequest = new HttpRequest(this.managerUrl);
         map.forEach(httpRequest::setParameter);
-        httpRequest.requestPost();
+
+        String jsonString = httpRequest.requestPost();
+        Json json = Json.read(jsonString);
+
+        // code == 0 means success, otherwise failure
+        if (json.at("code").asInteger() != 0) {
+            System.err.println("Manager return failing: " + json.at("message").asString());
+            return;
+        }
+
+        long agentETag = json.at("data").at("agent-etag").asLong();
+        processAgentETag(agentETag);
+    }
+
+    private void processAgentETag(long agentETag) throws Exception {
+
+        // initial value
+        if (AgentMain.getAgentETag() == 0 && agentETag > 0) {
+            AgentMain.setAgentETag(agentETag);
+            return;
+        }
+
+        // need update
+        if (AgentMain.getAgentETag() < agentETag) {
+            AgentMain.restart();
+            throw new Exception("Restarting..."); // throw an exception to make Timer stop
+        }
     }
 }
