@@ -1,7 +1,9 @@
 package com.hyd.sysmon.agent;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Scanner;
 
 public class AgentMain {
 
@@ -42,7 +44,23 @@ public class AgentMain {
         agentScheduler.start();
     }
 
+    ///////////////////////////////////////////////////////////////////////////////
+
+    private static final String RESTART_SCRIPT = System.getProperty("restart");
+
     public static void restart() {
 
+        if (Util.strEmpty(RESTART_SCRIPT)) {
+            System.err.println("No restart script (-Drestart=/path/to/script) specified.");
+            return;
+        }
+
+        try {
+            new ProcessBuilder()
+                    .command("/bin/sh", RESTART_SCRIPT)
+                    .start();
+        } catch (Exception e) {
+            System.err.println(e.toString());
+        }
     }
 }

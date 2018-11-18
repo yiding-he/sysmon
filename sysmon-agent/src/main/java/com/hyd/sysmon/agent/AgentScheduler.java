@@ -73,7 +73,6 @@ public class AgentScheduler {
         // need update
         if (AgentMain.getAgentETag() < agentETag) {
             AgentMain.restart();
-            throw new Exception("Restarting..."); // throw an exception to make Timer stop
         }
     }
 }
