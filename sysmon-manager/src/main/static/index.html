@@ -33,6 +33,14 @@
             background-color: dodgerblue;
             color: white;
         }
+
+        div.block.warn .field {
+            background-color: crimson;
+        }
+
+        div.block.warn .field .label {
+            color: #f7aeba;
+        }
     </style>
     <script src="js/jquery-3.3.1.js"></script>
     <script src="js/vue.js"></script>
@@ -54,6 +62,7 @@
 
             $.each(statuses, function (index, status) {
                 blocks.nodes.push({
+                    data: status,
                     title: status.host_name,
                     fields: [
                         {name: "CPU", value: (status.cpu_count || '?') + ' cores'},
