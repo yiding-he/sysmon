@@ -35,8 +35,11 @@
         }
     </style>
     <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/components/node-info.js"></script>
     <script>
-        var parseData = function (result) {
+        let blocks;
+        let parseData = function (result) {
             if (result.code !== 0) {
                 $('#message').html(result.message);
                 return;
@@ -46,56 +49,43 @@
                 return;
             }
 
-            var statuses = result.data.statuses;
+            let statuses = result.data.statuses;
+            blocks.nodes.length = 0;
 
-            $('#blocks').empty();
             $.each(statuses, function (index, status) {
-                $('<div>').addClass('block')
-                    .append($('<div>').addClass('title').html(status.host_name))
-                    .append($('<div>').addClass('field')
-                        .append($('<span>').addClass('label').html('CPU'))
-                        .append($('<span>').addClass('value').html((status.cpu_count || '?') + ' cores'))
-                    )
-                    .append($('<div>').addClass('field')
-                        .append($('<span>').addClass('label').html('&nbsp;'))
-                        .append($('<span>').addClass('value').html(status.cpu_usage))
-                    )
-                    .append($('<div>').addClass('field')
-                        .append($('<span>').addClass('label').html('Mem'))
-                        .append($('<span>').addClass('value').html(status.mem_total))
-                    )
-                    .append($('<div>').addClass('field')
-                        .append($('<span>').addClass('label').html('&nbsp;'))
-                        .append($('<span>').addClass('value').html(status.mem_usage))
-                    )
-                    .append($('<div>').addClass('field')
-                        .append($('<span>').addClass('label').html('Swp'))
-                        .append($('<span>').addClass('value').html(status.swap_total))
-                    )
-                    .append($('<div>').addClass('field')
-                        .append($('<span>').addClass('label').html('&nbsp;'))
-                        .append($('<span>').addClass('value').html(status.swap_usage))
-                    )
-                    .append($('<div>').addClass('field')
-                        .append($('<span>').addClass('label').html('FS'))
-                        .append($('<span>').addClass('value').html(status.min_disk_path || '?'))
-                    )
-                    .append($('<div>').addClass('field')
-                        .append($('<span>').addClass('label').html('&nbsp;'))
-                        .append($('<span>').addClass('value').html(status.min_disk_available || '?'))
-                    )
-                    .appendTo('#blocks');
+                blocks.nodes.push({
+                    title: status.host_name,
+                    fields: [
+                        {name: "CPU", value: (status.cpu_count || '?') + ' cores'},
+                        {name: " ", value: status.cpu_usage},
+                        {name: "Mem", value: status.mem_total},
+                        {name: " ", value: status.mem_usage},
+                        {name: "Swp", value: status.swap_total},
+                        {name: " ", value: status.swap_usage},
+                        {name: "FS", value: status.min_disk_path || '?'},
+                        {name: " ", value: status.min_disk_available || '?'},
+                    ]
+                });
             });
         };
 
-        var queryData = function () {
+        let queryData = function () {
             $.get("data", {}, parseData);
         };
 
-        $(function() {
+
+        $(function () {
+            blocks = new Vue({
+                el: '#blocks',
+                data: {
+                    nodes: []
+                }
+            });
+
             queryData();
             setInterval(queryData, 5000);
         });
+
     </script>
     <title>SysMon</title>
 </head>
@@ -103,7 +93,7 @@
 <div id="message"></div>
 
 <div id="blocks">
-
+    <node-info v-for="node in nodes" :key="node.title" :node="node"></node-info>
 </div>
 </body>
 </html>
