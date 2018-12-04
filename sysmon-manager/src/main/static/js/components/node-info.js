@@ -17,13 +17,13 @@ Vue.component('node-info', {
     },
     computed: {
         isWarn: function() {
-            if (__parse_percentage(this.node.data.cpu_usage) > 50) {
+            if (__parse_percentage(this.node.data.cpu_usage) > 70) {
                 return true;
             }
-            if (__parse_percentage(this.node.data.mem_usage) > 80) {
+            if (__parse_percentage(this.node.data.mem_usage) > 85) {
                 return true;
             }
-            if (__parse_bytesize(this.node.data.min_disk_available) < 1000000) {
+            if (__parse_bytesize(this.node.data.min_disk_available) < 1500000) {
                 return true;
             }
             return false;
@@ -33,8 +33,16 @@ Vue.component('node-info', {
         `<div class="block" :class="{warn: isWarn}">
             <div class="title">{{ node.title }}</div>
             <div class="field" v-for="field in node.fields">
-                <span class="label">{{ field.name }}</span>
-                <span class="value">{{ field.value }}</span>
+                <div v-if="field.progress && field.total != '0 KB'">
+                    <span class="label">{{ field.name }}</span>
+                    <div class="progress">
+                        <div class="progress-indicator" :style="field.style"></div>
+                    </div>
+                </div>
+                <div v-else-if="field.value">
+                    <span class="label">{{ field.name }}</span>
+                    <span class="value">{{ field.value }}</span>
+                </div>
             </div>
         </div>`
 });

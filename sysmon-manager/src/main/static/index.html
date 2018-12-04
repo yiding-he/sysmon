@@ -28,6 +28,19 @@
             color: #a1d5ff;
         }
 
+        div.block .field .progress {
+            display: inline-block;
+            width: 8em;
+            height: 1em;
+            background-color: #1461ab;
+            margin-top: 0.1em;
+        }
+
+        div.progress-indicator {
+            height: 1em;
+            background-color: #a1d5ff;
+        }
+
         div.block .field {
             padding: 0.2em 0.5em;
             background-color: dodgerblue;
@@ -65,12 +78,9 @@
                     data: status,
                     title: status.host_name,
                     fields: [
-                        {name: "CPU", value: (status.cpu_count || '?') + ' cores'},
-                        {name: " ", value: status.cpu_usage},
-                        {name: "Mem", value: status.mem_total},
-                        {name: " ", value: status.mem_usage},
-                        {name: "Swp", value: status.swap_total},
-                        {name: " ", value: status.swap_usage},
+                        {name: "CPU", total: status.cpu_count, progress: status.cpu_usage, style: {width: status.cpu_usage}},
+                        {name: "Mem", total: status.mem_total, progress: status.mem_usage, style: {width: status.mem_usage}},
+                        {name: "Swp", total: status.swap_total, progress: status.swap_usage, style: {width: status.swap_usage}},
                         {name: "FS", value: status.min_disk_path || '?'},
                         {name: " ", value: status.min_disk_available || '?'},
                     ]
