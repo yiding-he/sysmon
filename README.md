@@ -16,6 +16,6 @@ Linux 系统状态监控，分为服务器(sysmon-manager)和客户端(sysmon-ag
 
 服务器启动后，就等着客户端发送请求。请求当中包含客户端所在的主机状态信息。
 
-服务器页面效果如图：
+监控页面：
 
-![firefox_fx6d8jy06b](https://user-images.githubusercontent.com/900606/48876302-4a7bb280-ee38-11e8-8ded-76f35db7e5b0.png)
+![photo_2018-12-04_09-48-50](https://user-images.githubusercontent.com/900606/49413186-05e20680-f7aa-11e8-9453-373a63c469c7.jpg)
