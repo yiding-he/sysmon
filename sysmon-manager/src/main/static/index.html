@@ -12,6 +12,7 @@
         }
     </style>
     <link rel="stylesheet" href="css/block.css">
+    <link rel="stylesheet" href="css/service.css">
     <script src="js/jquery-3.3.1.js"></script>
     <script src="js/vue.js"></script>
     <script src="js/components/node-info.js"></script>
@@ -43,6 +44,7 @@
     <node-info v-for="node in nodes" :key="node.title" :node="node"></node-info>
 </div>
 
+<!-- type:"service", id:string, host:string, name:string, dead:boolean -->
 <div id="services">
     <service-info v-for="service in services" :key="service.id" :service="service"></service-info>
 </div>

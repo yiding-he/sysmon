@@ -4,8 +4,8 @@ Vue.component('service-info', {
         return {};
     },
     template: `
-<div class="service" :class="{dead: service.dead}">
-    {{ service.name }} - {{ service.host }}
+<div class="service" :class="{dead: service.data.dead}">
+    {{ service.data.name }} - {{ service.data.host_name }}
 </div>
     `
 });

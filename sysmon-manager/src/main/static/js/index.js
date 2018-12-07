@@ -43,8 +43,8 @@ function parseServices(result, servicesVue) {
     $.each(serviceList, function (index, service) {
         servicesVue.services.push({
             data: service,
-            name: service.serviceName,
-            host: service.hostName
+            name: service.name,
+            host: service.host
         });
     });
 }

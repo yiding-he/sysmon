@@ -18,12 +18,8 @@ public class NodeRegistry {
     public List<Map<String, Object>> getNodeList() {
         return nodeMappings.values().stream()
                 .sorted(Comparator.comparing(map -> String.valueOf(map.get("host_name"))))
-                .filter(NodeRegistry::notExpired)
+                .filter(RegistryHelper::notExpired)
                 .collect(Collectors.toList());
     }
 
-    private static boolean notExpired(Map<String, Object> status) {
-        long timestamp = (long) status.get("timestamp");
-        return System.currentTimeMillis() - timestamp < 30000;
-    }
 }
