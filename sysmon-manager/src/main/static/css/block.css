@@ -1,0 +1,43 @@
+div.block {
+    display: inline-block;
+    min-width: 13em;
+    margin: 1em;
+}
+
+div.block .title {
+    font-weight: bold;
+    color: #555555;
+}
+
+div.block .field .label {
+    display: inline-block;
+    min-width: 3em;
+    color: #a1d5ff;
+}
+
+div.block .field .progress {
+    display: inline-block;
+    width: 8em;
+    height: 1em;
+    background-color: #1461ab;
+    margin-top: 0.1em;
+}
+
+div.progress-indicator {
+    height: 1em;
+    background-color: #a1d5ff;
+}
+
+div.block .field {
+    padding: 0.2em 0.5em;
+    background-color: dodgerblue;
+    color: white;
+}
+
+div.block.warn .field {
+    background-color: crimson;
+}
+
+div.block.warn .field .label {
+    color: #f7aeba;
+}

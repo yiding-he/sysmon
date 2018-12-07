@@ -10,97 +10,25 @@
         div {
             font-size: 9pt;
         }
-
-        div.block {
-            display: inline-block;
-            min-width: 13em;
-            margin: 1em;
-        }
-
-        div.block .title {
-            font-weight: bold;
-            color: #555555;
-        }
-
-        div.block .field .label {
-            display: inline-block;
-            min-width: 3em;
-            color: #a1d5ff;
-        }
-
-        div.block .field .progress {
-            display: inline-block;
-            width: 8em;
-            height: 1em;
-            background-color: #1461ab;
-            margin-top: 0.1em;
-        }
-
-        div.progress-indicator {
-            height: 1em;
-            background-color: #a1d5ff;
-        }
-
-        div.block .field {
-            padding: 0.2em 0.5em;
-            background-color: dodgerblue;
-            color: white;
-        }
-
-        div.block.warn .field {
-            background-color: crimson;
-        }
-
-        div.block.warn .field .label {
-            color: #f7aeba;
-        }
     </style>
+    <link rel="stylesheet" href="css/block.css">
     <script src="js/jquery-3.3.1.js"></script>
     <script src="js/vue.js"></script>
     <script src="js/components/node-info.js"></script>
+    <script src="js/components/service-info.js"></script>
+    <script src="js/index.js"></script>
     <script>
-        let blocks;
-        let parseData = function (result) {
-            if (result.code !== 0) {
-                $('#message').html(result.message);
-                return;
-            }
-
-            if (!result.data || !result.data.statuses) {
-                return;
-            }
-
-            let statuses = result.data.statuses;
-            blocks.nodes.length = 0;
-
-            $.each(statuses, function (index, status) {
-                blocks.nodes.push({
-                    data: status,
-                    title: status.host_name,
-                    fields: [
-                        {name: "CPU", total: status.cpu_count, progress: status.cpu_usage, style: {width: status.cpu_usage}},
-                        {name: "Mem", total: status.mem_total, progress: status.mem_usage, style: {width: status.mem_usage}},
-                        {name: "Swp", total: status.swap_total, progress: status.swap_usage, style: {width: status.swap_usage}},
-                        {name: "FS", value: status.min_disk_path || '?'},
-                        {name: " ", value: status.min_disk_available || '?'},
-                    ]
-                });
-            });
-        };
+        let blocks, services;
 
         let queryData = function () {
-            $.get("data", {}, parseData);
+            $.get("data", {}, function(result) {
+                parseData(result, blocks, services);
+            });
         };
 
-
         $(function () {
-            blocks = new Vue({
-                el: '#blocks',
-                data: {
-                    nodes: []
-                }
-            });
-
+            blocks = new Vue({el: '#blocks', data: {nodes: []}});
+            services = new Vue({el: '#services', data: {services: []}});
             queryData();
             setInterval(queryData, 5000);
         });
@@ -113,6 +41,10 @@
 
 <div id="blocks">
     <node-info v-for="node in nodes" :key="node.title" :node="node"></node-info>
+</div>
+
+<div id="services">
+    <service-info v-for="service in services" :key="service.id" :service="service"></service-info>
 </div>
 </body>
 </html>
