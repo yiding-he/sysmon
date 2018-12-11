@@ -56,9 +56,9 @@ public class AgentMain {
         }
 
         try {
-            new ProcessBuilder()
-                    .command("/bin/sh", RESTART_SCRIPT)
-                    .start();
+            String[] command = {"/bin/sh", RESTART_SCRIPT, "&"};
+            System.out.println("Restarting agent with command - " + String.join(" ", command));
+            new ProcessBuilder().command(command).start();
         } catch (Exception e) {
             System.err.println(e.toString());
         }
