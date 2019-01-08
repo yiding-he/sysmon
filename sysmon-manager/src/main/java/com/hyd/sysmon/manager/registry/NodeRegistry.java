@@ -12,7 +12,8 @@ public class NodeRegistry {
 
     public void addNode(Map<String, Object> data) {
         String host = Objects.toString(data.get("host"), "*");
-        this.nodeMappings.put(host, data);
+        String hostName = Objects.toString(data.get("host_name"), "*");
+        this.nodeMappings.put(host + ":" + hostName, data);
     }
 
     public List<Map<String, Object>> getNodeList() {
